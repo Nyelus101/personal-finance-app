@@ -78,6 +78,46 @@ export default Header;
 
 
 
+    //   {/* TRANSACTION GRID */}
+    //   <div className='bg-white rounded-lg w-full h-full overflow-y-auto scroll-hidden'>
+    //     {/* Header Row */}
+    //     <div className='bg-green-600 hidden md:grid md:grid-cols-4 md:gap-4 text-gray-600 text-sm font-semibold p-2'>
+    //       <div className='py-2 text-left'>Recipient/Sender</div>
+    //       <div className='py-2 text-left'>Category</div>
+    //       <div className='py-2 text-left'>Transaction Date</div>
+    //       <div className='py-2 text-right'>Amount</div>
+    //     </div>
+
+    //     {/* Transaction Rows for small screens */}
+    //     <div className=''>
+    //       {currentTransactions.length > 0 ? (
+    //         currentTransactions.map((transaction, index) => (
+            //   <div key={index} className='flex items-center justify-between w-full py-2 border-b hover:bg-gray-100'>
+            //     <div className='flex items-center justify-start w-[70%]'>
+            //       <div className='font-semibold '>
+            //         <img src={transaction.avatar} alt={transaction.name} className='w-8 h-8 rounded-full mr-3' />
+            //       </div>
+            //       <div className='flex flex-col md:flex-row items-start justify-start'>
+            //         <div>{transaction.name}</div>
+            //         <div className='text-gray-600 text-sm'>{transaction.category}</div>
+            //       </div>
+            //     </div>
+            //     <div className='flex flex-col-reverse md:flex-row items-end justify-end'>
+            //       <div className='text-gray-600 text-sm'>{new Date(transaction.date).toLocaleDateString()}</div>
+            //       <div className={`text-right font-semibold ${transaction.amount < 0 ? 'text-red-500' : 'text-green-500'}`}>
+            //         {transaction.amount < 0 ? '-' : '+'}${Math.abs(transaction.amount).toFixed(2)}
+            //       </div>
+            //     </div>   
+            //   </div>
+    //         ))
+    //       ) : (
+    //         <div className="col-span-4 py-4 text-center">No transactions found.</div>
+    //       )}
+    //     </div>
+    //   </div>
+
+
+
 
 
 
