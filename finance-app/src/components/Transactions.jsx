@@ -1,16 +1,27 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { TransactionsContext } from './TransactionsContext';
 import Pagination from './Pagination';
 import TransactionsFilter from './TransactionsFilter';
+import { useSearchParams } from 'react-router-dom'; // Import useSearchParams
 
 const Transactions = () => {
-  const {
-    currentTransactions,
-    currentPage, setCurrentPage,
-    totalPages,
+  const { 
+    currentTransactions, 
+    currentPage, setCurrentPage, 
+    totalPages, 
+    categoryFilter, setCategoryFilter 
   } = useContext(TransactionsContext);
-
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
+
+  // Read the category from the query parameters
+  const [searchParams] = useSearchParams();
+  const queryCategory = searchParams.get('category');
+
+  useEffect(() => {
+    if (queryCategory) {
+      setCategoryFilter(queryCategory); // Update category filter based on query param
+    }
+  }, [queryCategory, setCategoryFilter]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -110,17 +121,17 @@ export default Transactions;
 
 
 
-// import React, { useState, useEffect, useContext } from 'react';
+// import React, { useContext, useEffect, useState } from 'react';
+// import { TransactionsContext } from './TransactionsContext';
 // import Pagination from './Pagination';
 // import TransactionsFilter from './TransactionsFilter';
-// import { TransactionsContext } from './TransactionsContext';
 
 // const Transactions = () => {
-//   const { transactions, categoryFilter, setCategoryFilter } = useContext(TransactionsContext);
-//   const [currentPage, setCurrentPage] = useState(1);
-//   const [searchQuery, setSearchQuery] = useState('');
-//   const [sortBy, setSortBy] = useState('latest');
-//   const transactionsPerPage = 10;
+//   const {
+//     currentTransactions,
+//     currentPage, setCurrentPage,
+//     totalPages,
+//   } = useContext(TransactionsContext);
 
 //   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
 
@@ -128,61 +139,17 @@ export default Transactions;
 //     const handleResize = () => {
 //       setIsSmallScreen(window.innerWidth < 768);
 //     };
-
 //     window.addEventListener('resize', handleResize);
 //     return () => {
 //       window.removeEventListener('resize', handleResize);
 //     };
 //   }, []);
 
-//   const goToPage = (page) => setCurrentPage(page);
-
-//   const filteredBySearch = transactions.filter(transaction =>
-//     transaction.name.toLowerCase().includes(searchQuery.toLowerCase())
-//   );
-
-//   const filteredByCategory = categoryFilter === 'All'
-//     ? filteredBySearch
-//     : filteredBySearch.filter(transaction => transaction.category === categoryFilter);
-
-//   const sortedTransactions = [...filteredByCategory].sort((a, b) => {
-//     switch (sortBy) {
-//       case 'latest':
-//         return new Date(b.date) - new Date(a.date);
-//       case 'oldest':
-//         return new Date(a.date) - new Date(b.date);
-//       case 'A-Z':
-//         return a.name.localeCompare(b.name);
-//       case 'Z-A':
-//         return b.name.localeCompare(a.name);
-//       case 'highest':
-//         return b.amount - a.amount;
-//       case 'lowest':
-//         return a.amount - b.amount;
-//       default:
-//         return 0;
-//     }
-//   });
-
-//   const totalPages = Math.ceil(sortedTransactions.length / transactionsPerPage);
-
-//   const currentTransactions = sortedTransactions.slice(
-//     (currentPage - 1) * transactionsPerPage,
-//     currentPage * transactionsPerPage
-//   );
-
 //   return (
 //     <div className='h-full'>
 //       <h2 className='text-3xl lg:text-xl font-bold mb-4'>Transactions</h2>
 //       <div className='bg-white rounded-lg p-8 pb-3 h-[80vh] lg:h-[90vh] flex flex-col justify-around'>
-//         <TransactionsFilter
-//           searchQuery={searchQuery}
-//           setSearchQuery={setSearchQuery}
-//           sortBy={sortBy}
-//           setSortBy={setSortBy}
-//           categoryFilter={categoryFilter}
-//           setCategoryFilter={setCategoryFilter}
-//         />
+//         <TransactionsFilter />
 
 //         <div className='bg-white rounded-lg w-full h-full overflow-y-auto scroll-hidden'>
 //           {!isSmallScreen ? (
@@ -247,7 +214,7 @@ export default Transactions;
 //         <Pagination
 //           currentPage={currentPage}
 //           totalPages={totalPages}
-//           goToPage={goToPage}
+//           goToPage={setCurrentPage}
 //         />
 //       </div>
 //     </div>
@@ -255,3 +222,4 @@ export default Transactions;
 // };
 
 // export default Transactions;
+
