@@ -6,14 +6,22 @@ export const TransactionsContext = createContext();
 
 // Create a provider component
 export const TransactionsProvider = ({ children }) => {
-  const transactions = data.transactions || [];
-  const budgets = data.budgets || [];
+  const initialTransactions = data.transactions || [];
+  const initialBudgets = data.budgets || [];
+
+  const [transactions, setTransactions] = useState(initialTransactions);
+  const [budgets, setBudgets] = useState(initialBudgets);
   const [categoryFilter, setCategoryFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('latest');
   const [currentPage, setCurrentPage] = useState(1);
 
   const transactionsPerPage = 10;
+
+  // Handle adding a new budget
+  const addBudget = (newBudget) => {
+    setBudgets([...budgets, newBudget]);
+  };
 
   // Handle filtering by search
   const filteredBySearch = transactions.filter(transaction =>
@@ -58,12 +66,14 @@ export const TransactionsProvider = ({ children }) => {
       searchQuery, setSearchQuery,
       sortBy, setSortBy,
       currentPage, setCurrentPage,
-      totalPages, currentTransactions, budgets, transactions
+      totalPages, currentTransactions, budgets, transactions,
+      addBudget // Expose addBudget function
     }}>
       {children}
     </TransactionsContext.Provider>
   );
 };
+
 
 
 
