@@ -8,9 +8,11 @@ export const TransactionsContext = createContext();
 export const TransactionsProvider = ({ children }) => {
   const initialTransactions = data.transactions || [];
   const initialBudgets = data.budgets || [];
+  const initialPots = data.pots || [];
 
   const [transactions, setTransactions] = useState(initialTransactions);
   const [budgets, setBudgets] = useState(initialBudgets);
+  const [pots, setPots] = useState(initialPots);
   const [categoryFilter, setCategoryFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('latest');
@@ -66,7 +68,7 @@ export const TransactionsProvider = ({ children }) => {
       searchQuery, setSearchQuery,
       sortBy, setSortBy,
       currentPage, setCurrentPage,
-      totalPages, currentTransactions, budgets, transactions,
+      totalPages, currentTransactions, budgets, transactions, pots,
       addBudget // Expose addBudget function
     }}>
       {children}
