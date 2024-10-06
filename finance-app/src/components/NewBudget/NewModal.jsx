@@ -47,7 +47,7 @@ const Modal = ({ isOpen, toggleModal }) => {
   if (!isOpen) return null; // Render nothing if modal is not open
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" style={{ zIndex: 50 }}>
       <div className="bg-white p-8 rounded-lg shadow-lg w-[90%] md:w-[50%]">
         <h3 className="text-lg font-bold mb-4">Add New Budget</h3>
         <form onSubmit={handleSubmit}>
