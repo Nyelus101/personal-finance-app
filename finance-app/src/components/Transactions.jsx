@@ -42,7 +42,7 @@ const Transactions = () => {
         <div className='bg-white rounded-lg w-full h-full overflow-y-auto scroll-hidden'>
           {!isSmallScreen ? (
             <table className='min-w-full bg-white'>
-              <thead className='bg-green-600'>
+              <thead className=''>
                 <tr className='text-gray-600 text-sm font-semibold'>
                   <th className='py-2 px-4 border-b text-left'>Recipient/Sender</th>
                   <th className='py-2 px-4 border-b text-left'>Category</th>
