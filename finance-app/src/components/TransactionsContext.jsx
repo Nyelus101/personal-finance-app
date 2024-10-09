@@ -9,10 +9,12 @@ export const TransactionsProvider = ({ children }) => {
   const initialTransactions = data.transactions || [];
   const initialBudgets = data.budgets || [];
   const initialPots = data.pots || [];
+  const initialBalance = data.balance || [];
 
   const [transactions, setTransactions] = useState(initialTransactions);
   const [budgets, setBudgets] = useState(initialBudgets);
   const [pots, setPots] = useState(initialPots);
+  const [balance, setBalance] = useState(initialBalance);
   const [categoryFilter, setCategoryFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('latest');
@@ -68,7 +70,7 @@ export const TransactionsProvider = ({ children }) => {
       searchQuery, setSearchQuery,
       sortBy, setSortBy,
       currentPage, setCurrentPage,
-      totalPages, currentTransactions, budgets, transactions, pots,
+      totalPages, currentTransactions, budgets, transactions, pots, balance,
       addBudget // Expose addBudget function
     }}>
       {children}

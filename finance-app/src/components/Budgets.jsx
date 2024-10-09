@@ -95,10 +95,6 @@ const Budgets = () => {
       <div className='flex w-full flex-col lg:flex-row gap-5'>
         {/* Spending Summary Section */}
         <div className='w-full lg:w-[40%] bg-white rounded-lg p-4'>
-          {/* <div className='donut-pie w-full h-64'>
-            <Doughnut data={getDonutChartData()} options={{ maintainAspectRatio: false }} />
-            <div className='bg-red-300'>${totalSpent of all categories} of {totalMaximum of all categories} </div>
-          </div> */}
           <div className='donut-pie relative w-full h-64' style={{ zIndex: 10 }}>
             <Doughnut 
               data={getDonutChartData()} 
