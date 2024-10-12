@@ -47,7 +47,7 @@ const Header = () => {
       </div>
 
       {/* Footer for medium and smaller screens */}
-      <footer className="lg:hidden fixed bottom-0 w-full bg-gray-800 text-white rounded-t-lg">
+      <footer className="lg:hidden fixed bottom-0 w-full bg-gray-800 text-white rounded-t-lg z-50 ">
         <nav className="p-4 pb-0 flex justify-around">
             <ul className="flex w-full justify-around">
             {routes.map((route) => (

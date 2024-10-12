@@ -1,48 +1,27 @@
+// Budgets.js
 import React, { useState, useContext } from 'react';
 import { TransactionsContext } from './TransactionsContext';
 import { PiDotsThree } from "react-icons/pi";
 import { IoCaretForward } from "react-icons/io5";
 import { useNavigate } from 'react-router-dom';
 import Modal from './NewBudget/NewModal';
-import { Doughnut } from 'react-chartjs-2'; // Import Doughnut for donut chart
-import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
-
-Chart.register(ArcElement, Tooltip, Legend); // Register Chart.js elements
+import DonutChart from './DonutChart'; // Import the DonutChart component
 
 const Budgets = () => {
   const { budgets, transactions } = useContext(TransactionsContext);
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
 
-  // Helper function to get the spent amount for the entire category
+  // Helper function to get the spent and remaining amount for a category
   const getSpentAndRemaining = (category, maximum) => {
     const spentTransactions = transactions.filter(transaction => transaction.category === category);
-
-    // Summing up the absolute values of the transaction amounts to calculate total spent
     const totalSpent = spentTransactions.reduce((total, transaction) => total + Math.abs(transaction.amount), 0);
     const remaining = maximum - totalSpent;
 
     return { totalSpent, remaining };
   };
 
-  // Prepare data for the donut chart
-  const getDonutChartData = () => {
-    const labels = budgets.map(budget => budget.category);
-    const data = budgets.map(budget => {
-      const { totalSpent } = getSpentAndRemaining(budget.category, budget.maximum);
-      return totalSpent;
-    });
-    const backgroundColor = budgets.map(budget => budget.theme);
-
-    return {
-      // labels,
-      datasets: [{
-        data,
-        backgroundColor,
-        hoverOffset: 4,
-      }]
-    };
-  };
+  // Prepare data for the donut chart is moved to DonutChart component
 
   // Helper function to get the last 3 transactions for each category
   const getLastThreeTransactions = (category) => {
@@ -62,20 +41,20 @@ const Budgets = () => {
     setIsModalOpen(!isModalOpen);
   };
 
+  // Function to calculate total spent and maximum across all budgets
   const getTotalSpentAndMaximum = () => {
     const totalSpent = budgets.reduce((sum, budget) => {
       const spentForCategory = transactions
         .filter(transaction => transaction.category === budget.category)
         .reduce((total, transaction) => total + Math.abs(transaction.amount), 0);
-  
+
       return sum + spentForCategory;
     }, 0);
-  
+
     const totalMaximum = budgets.reduce((sum, budget) => sum + budget.maximum, 0);
-  
+
     return { totalSpent, totalMaximum };
   };
-  
 
   return (
     <div className="budget-list">
@@ -95,19 +74,8 @@ const Budgets = () => {
       <div className='flex w-full flex-col lg:flex-row gap-5'>
         {/* Spending Summary Section */}
         <div className='w-full lg:w-[40%] bg-white rounded-lg p-4'>
-          <div className='donut-pie relative w-full h-64' style={{ zIndex: 10 }}>
-            <Doughnut 
-              data={getDonutChartData()} 
-              options={{ maintainAspectRatio: false }} 
-            />
-            <div className='absolute inset-0 flex items-center justify-center'>
-              <div className='p-2 rounded flex flex-col items-center'>
-                <span className='font-bold text-xl'>${getTotalSpentAndMaximum().totalSpent.toFixed(2)}</span>
-                <span>of ${getTotalSpentAndMaximum().totalMaximum.toFixed(2)}</span>
-              </div>
-            </div>
-          </div>
-
+          <DonutChart budgets={budgets} transactions={transactions} /> {/* Use DonutChart here */}
+          
           <div className='spendingSummary pt-4'>
             <span className='font-bold text-lg'>Spending Summary</span>
             {budgets.map((budget, index) => {
@@ -122,10 +90,7 @@ const Budgets = () => {
 
                   <p className='space-x-3'>
                     <span className='font-bold'>
-                      {totalSpent < 0 
-                        ? `-$${Math.abs(totalSpent).toFixed(2)}` 
-                        : `$${totalSpent.toFixed(2)}`
-                      }
+                      ${totalSpent.toFixed(2)}
                     </span>  
                     <span className='text-sm text-gray-500'>of</span>
                     <span className='text-sm text-gray-500'>${budget.maximum}</span> 
@@ -166,10 +131,7 @@ const Budgets = () => {
                       <div className='flex flex-col justify-start w-[50%] pl-5' style={{ borderLeft: `4px solid ${budget.theme}` }}>
                         <span>Spent</span>
                         <span>
-                          {totalSpent < 0 
-                            ? `-$${Math.abs(totalSpent).toFixed(2)}` 
-                            : `$${totalSpent.toFixed(2)}`
-                          }
+                          ${totalSpent.toFixed(2)}
                         </span>
                       </div>
                       <div className='flex flex-col items-start justify-start w-[50%] pl-5 border-l-4'>
@@ -235,39 +197,55 @@ export default Budgets;
 
 
 
+
+
+
+
+
 // import React, { useState, useContext } from 'react';
 // import { TransactionsContext } from './TransactionsContext';
 // import { PiDotsThree } from "react-icons/pi";
 // import { IoCaretForward } from "react-icons/io5";
 // import { useNavigate } from 'react-router-dom';
 // import Modal from './NewBudget/NewModal';
+// import { Doughnut } from 'react-chartjs-2'; // Import Doughnut for donut chart
+// import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
 
-// const currentMonthName = new Date().toLocaleString('default', { month: 'long' });
+// Chart.register(ArcElement, Tooltip, Legend); // Register Chart.js elements
 
 // const Budgets = () => {
 //   const { budgets, transactions } = useContext(TransactionsContext);
 //   const navigate = useNavigate();
 //   const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
 
-//   // Get current month and year
-//   const currentMonth = new Date().getMonth();
-//   const currentYear = new Date().getFullYear();
-
-//   // Helper function to get the spent amount for the current month and remaining amount
+//   // Helper function to get the spent amount for the entire category
 //   const getSpentAndRemaining = (category, maximum) => {
-//     const spentTransactions = transactions.filter(transaction => {
-//       const transactionDate = new Date(transaction.date);
-//       return (
-//         transaction.category === category &&
-//         transactionDate.getMonth() === currentMonth &&
-//         transactionDate.getFullYear() === currentYear
-//       );
-//     });
+//     const spentTransactions = transactions.filter(transaction => transaction.category === category);
 
-//     const totalSpent = spentTransactions.reduce((total, transaction) => total + transaction.amount, 0);
+//     // Summing up the absolute values of the transaction amounts to calculate total spent
+//     const totalSpent = spentTransactions.reduce((total, transaction) => total + Math.abs(transaction.amount), 0);
 //     const remaining = maximum - totalSpent;
 
 //     return { totalSpent, remaining };
+//   };
+
+//   // Prepare data for the donut chart
+//   const getDonutChartData = () => {
+//     const labels = budgets.map(budget => budget.category);
+//     const data = budgets.map(budget => {
+//       const { totalSpent } = getSpentAndRemaining(budget.category, budget.maximum);
+//       return totalSpent;
+//     });
+//     const backgroundColor = budgets.map(budget => budget.theme);
+
+//     return {
+//       // labels,
+//       datasets: [{
+//         data,
+//         backgroundColor,
+//         hoverOffset: 4,
+//       }]
+//     };
 //   };
 
 //   // Helper function to get the last 3 transactions for each category
@@ -288,6 +266,21 @@ export default Budgets;
 //     setIsModalOpen(!isModalOpen);
 //   };
 
+//   const getTotalSpentAndMaximum = () => {
+//     const totalSpent = budgets.reduce((sum, budget) => {
+//       const spentForCategory = transactions
+//         .filter(transaction => transaction.category === budget.category)
+//         .reduce((total, transaction) => total + Math.abs(transaction.amount), 0);
+  
+//       return sum + spentForCategory;
+//     }, 0);
+  
+//     const totalMaximum = budgets.reduce((sum, budget) => sum + budget.maximum, 0);
+  
+//     return { totalSpent, totalMaximum };
+//   };
+  
+
 //   return (
 //     <div className="budget-list">
 //       <div className='flex items-center justify-between mb-4'>
@@ -306,7 +299,19 @@ export default Budgets;
 //       <div className='flex w-full flex-col lg:flex-row gap-5'>
 //         {/* Spending Summary Section */}
 //         <div className='w-full lg:w-[40%] bg-white rounded-lg p-4'>
-//           <div className=' donut-pie w-10 h-10 bg-green-500' ></div>
+//           <div className='donut-pie relative w-full h-64' style={{ zIndex: 10 }}>
+//             <Doughnut 
+//               data={getDonutChartData()} 
+//               options={{ maintainAspectRatio: false }} 
+//             />
+//             <div className='absolute inset-0 flex items-center justify-center'>
+//               <div className='p-2 rounded flex flex-col items-center'>
+//                 <span className='font-bold text-xl'>${getTotalSpentAndMaximum().totalSpent.toFixed(2)}</span>
+//                 <span>of ${getTotalSpentAndMaximum().totalMaximum.toFixed(2)}</span>
+//               </div>
+//             </div>
+//           </div>
+
 //           <div className='spendingSummary pt-4'>
 //             <span className='font-bold text-lg'>Spending Summary</span>
 //             {budgets.map((budget, index) => {
@@ -320,16 +325,22 @@ export default Budgets;
 //                   </div>
 
 //                   <p className='space-x-3'>
-//                     <span className='font-bold'>${totalSpent.toFixed(2)}</span>  
+//                     <span className='font-bold'>
+//                       {totalSpent < 0 
+//                         ? `-$${Math.abs(totalSpent).toFixed(2)}` 
+//                         : `$${totalSpent.toFixed(2)}`
+//                       }
+//                     </span>  
 //                     <span className='text-sm text-gray-500'>of</span>
 //                     <span className='text-sm text-gray-500'>${budget.maximum}</span> 
 //                   </p>
 //                 </div>
 //               );
 //             })}
- 
 //           </div>
 //         </div>
+
+//         {/* Budgets Section */}
 //         <div className='w-full lg:w-[60%] h-full lg:h-[85vh] lg:overflow-y-auto lg:scroll-hidden'>
 //           <ul>
 //             {budgets.map((budget) => {
@@ -357,8 +368,13 @@ export default Budgets;
 //                     </div>
 //                     <div className='flex items-center justify-between text-sm py-5'>
 //                       <div className='flex flex-col justify-start w-[50%] pl-5' style={{ borderLeft: `4px solid ${budget.theme}` }}>
-//                         <span>Spent amount: {currentMonthName}</span>
-//                         <span>${totalSpent.toFixed(2)}</span>
+//                         <span>Spent</span>
+//                         <span>
+//                           {totalSpent < 0 
+//                             ? `-$${Math.abs(totalSpent).toFixed(2)}` 
+//                             : `$${totalSpent.toFixed(2)}`
+//                           }
+//                         </span>
 //                       </div>
 //                       <div className='flex flex-col items-start justify-start w-[50%] pl-5 border-l-4'>
 //                         <span>Remaining</span>
@@ -412,6 +428,10 @@ export default Budgets;
 // };
 
 // export default Budgets;
+
+
+
+
 
 
 
