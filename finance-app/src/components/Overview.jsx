@@ -3,10 +3,13 @@ import { TransactionsContext } from './TransactionsContext';
 import { IoCaretForward } from "react-icons/io5";
 import DonutChart from './DonutChart';
 import { PiTipJarLight } from "react-icons/pi";
+import { useNavigate } from 'react-router-dom';
+
 
 
 const Overview = () => {
   const { budgets, balance, transactions, pots } = useContext(TransactionsContext); // Access transactions from context
+  const navigate = useNavigate(); // React Router hook for navigation
 
   // Get the latest five transactions
   const latestTransactions = transactions
@@ -36,13 +39,13 @@ const Overview = () => {
             <div className='bg-white h-[30%] rounded-2xl p-3 '>
               <div className='flex items-center justify-between mb-2'>
                   <h4 className="text-sm font-bold">Pots</h4>
-                  <div className='flex items-center space-x-3 text-sm cursor-pointer' onClick={() => handleSeeAll(budget.category)}>
+                  <div className='flex items-center space-x-3 text-sm cursor-pointer' onClick={() => navigate('/pots')}>
                     <span className="">See Details</span>
                     <IoCaretForward />
                   </div>
               </div>
-              <div className='flex flex-row items-center justify-between w-full gap-2'>
-                <div className='flex flex-row items-center gap-7 rounded-2xl p-2 w-[40%] bg-custom-bg'>
+              <div className='flex flex-col md:flex-row items-center justify-between w-full gap-4'>
+                <div className='flex flex-row items-center gap-7 rounded-2xl p-2 w-full md:w-[40%] bg-custom-bg'>
                   <div className='text-5xl'>
                     <PiTipJarLight />
                   </div>
@@ -51,24 +54,24 @@ const Overview = () => {
                     <span className='font-bold text-4xl'>$850</span>
                   </div>
                 </div>
-                <div className='w-[60%] bg-yellow-300'>
-                  <ul className="grid grid-cols-2 ">
+                <div className='w-full md:w-[60%] '>
+                  <ul className="grid grid-cols-2 gap-1">
                     {pots.slice(0, 4).map((pot) => (
-                      <li key={pot.id} className="">
-                        <div className="bg-white  shadow rounded-lg">
-                          <p className='font-semibold text-2xl'>${(pot.total).toFixed(2)}</p>                
+                      <li key={pot.id} className="" >
+                        <div className="bg-white pl-3 rounded" style={{ borderLeft: `4px solid ${pot.theme}` }}>
+                          <span className='text-sm'>{pot.name} </span>
+                          <p className='font-semibold text-sm'>${pot.total}</p>                
                         </div>
                       </li>
                     ))}
                   </ul>
                 </div>
-
               </div>
             </div>
             <div className='bg-white h-[70%] rounded-2xl p-3'>
               <div className='flex items-center justify-between mb-2'>
                   <h4 className="text-sm font-bold">Transactions</h4>
-                  <div className='flex items-center space-x-3 text-sm cursor-pointer' onClick={() => handleSeeAll(budget.category)}>
+                  <div className='flex items-center space-x-3 text-sm cursor-pointer' onClick={() => navigate('/transactions')}>
                     <span className="">View all</span>
                     <IoCaretForward />
                   </div>                
@@ -98,12 +101,12 @@ const Overview = () => {
             <div className='bg-white h-[60%] rounded-2xl p-3 '>
               <div className='flex items-center justify-between '>
                 <h4 className="text-sm font-bold">Budgets</h4>
-                <div className='flex items-center space-x-3 text-sm cursor-pointer' onClick={() => handleSeeAll(budget.category)}>
+                <div className='flex items-center space-x-3 text-sm cursor-pointer' onClick={() => navigate('/budgets')}>
                   <span className="">See Details</span>
                   <IoCaretForward />
                 </div>
               </div>
-              <div className='flex flex-row items-center'>
+              <div className='flex flex-row items-center h-fit '>
                 <div className='w-[70%] flex items-center h-full'>
                   {/* Apply specific width/height using Tailwind and restrict to max size */}
                   <div className="w-full h-fit ">
@@ -129,7 +132,7 @@ const Overview = () => {
             <div className='bg-white h-[40%] rounded-2xl p-3 '>
               <div className='flex items-center justify-between mb-2'>
                   <h4 className="text-sm font-bold">Recurring Bills</h4>
-                  <div className='flex items-center space-x-3 text-sm cursor-pointer' onClick={() => handleSeeAll(budget.category)}>
+                  <div className='flex items-center space-x-3 text-sm cursor-pointer' onClick={() => navigate('/recurring-bills')}>
                     <span className="">See Details</span>
                     <IoCaretForward />
                   </div>

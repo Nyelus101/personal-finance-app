@@ -4,15 +4,22 @@ import data from '../assets/data.json';
 // Create the context
 export const TransactionsContext = createContext();
 
+
+// Get stored budgets from localStorage if available
+const getStoredBudgets = () => {
+  const storedBudgets = localStorage.getItem('budgets');
+  return storedBudgets ? JSON.parse(storedBudgets) : data.budgets || [];
+};
+
 // Create a provider component
 export const TransactionsProvider = ({ children }) => {
   const initialTransactions = data.transactions || [];
-  const initialBudgets = data.budgets || [];
+  // const initialBudgets = data.budgets || [];
   const initialPots = data.pots || [];
   const initialBalance = data.balance || [];
 
   const [transactions, setTransactions] = useState(initialTransactions);
-  const [budgets, setBudgets] = useState(initialBudgets);
+  const [budgets, setBudgets] = useState(getStoredBudgets);
   const [pots, setPots] = useState(initialPots);
   const [balance, setBalance] = useState(initialBalance);
   const [categoryFilter, setCategoryFilter] = useState('All');
@@ -24,8 +31,15 @@ export const TransactionsProvider = ({ children }) => {
 
   // Handle adding a new budget
   const addBudget = (newBudget) => {
-    setBudgets([...budgets, newBudget]);
+    const updatedBudgets = [...budgets, newBudget];
+    setBudgets(updatedBudgets);
   };
+
+
+    // Save budgets to localStorage when they change
+    useEffect(() => {
+      localStorage.setItem('budgets', JSON.stringify(budgets));
+    }, [budgets]);
 
   // Handle filtering by search
   const filteredBySearch = transactions.filter(transaction =>
@@ -70,8 +84,8 @@ export const TransactionsProvider = ({ children }) => {
       searchQuery, setSearchQuery,
       sortBy, setSortBy,
       currentPage, setCurrentPage,
-      totalPages, currentTransactions, budgets, transactions, pots, balance,
-      addBudget // Expose addBudget function
+      totalPages, currentTransactions, budgets, setBudgets, transactions, pots, setPots, 
+      balance, setBalance,  addBudget // Expose addBudget function
     }}>
       {children}
     </TransactionsContext.Provider>
