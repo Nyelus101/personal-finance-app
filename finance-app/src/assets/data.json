@@ -400,21 +400,25 @@
     ],
     "budgets": [
         {
+            "id": "1",
             "category": "Entertainment",
             "maximum": 50.00,
             "theme": "#277C78"
         },
         {
+            "id": "2",
             "category": "Bills",
             "maximum": 750.00,
             "theme": "#82C9D7"
         },
         {
+            "id": "3",
             "category": "Dining Out",
             "maximum": 750.00,
             "theme": "#F2CDAC"
         },
         {
+            "id": "4",
             "category": "Personal Care",
             "maximum": 100.00,
             "theme": "#626070"
