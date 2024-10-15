@@ -2,10 +2,10 @@ import React, { useState, useContext } from 'react';
 import { TransactionsContext } from './TransactionsContext';
 import { PiDotsThree } from "react-icons/pi";
 import { useNavigate } from 'react-router-dom';
-import Modal from './NewBudget/NewModal';
+import Modal from './NewPot/NewModal';
 
 const Pots = () => {
-  const { budgets, transactions, pots } = useContext(TransactionsContext);
+  const { deletePots, addPots, pots } = useContext(TransactionsContext);
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
 

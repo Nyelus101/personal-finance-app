@@ -10,15 +10,20 @@ const getStoredBudgets = () => {
   return storedBudgets ? JSON.parse(storedBudgets) : data.budgets || [];
 };
 
+// Get stored budgets from localStorage if available
+const getStoredPots = () => {
+  const storedPots = localStorage.getItem('pots');
+  return storedPots ? JSON.parse(storedPots) : data.pots || [];
+};
+
 // Create a provider component
 export const TransactionsProvider = ({ children }) => {
   const initialTransactions = data.transactions || [];
-  const initialPots = data.pots || [];
   const initialBalance = data.balance || [];
 
   const [transactions, setTransactions] = useState(initialTransactions);
   const [budgets, setBudgets] = useState(getStoredBudgets);
-  const [pots, setPots] = useState(initialPots);
+  const [pots, setPots] = useState(getStoredPots);
   const [balance, setBalance] = useState(initialBalance);
   const [categoryFilter, setCategoryFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
@@ -33,12 +38,26 @@ export const TransactionsProvider = ({ children }) => {
     setBudgets(updatedBudgets);
   };
 
+    // Handle adding a new pot
+    const addPot = (newPot) => {
+      const updatedPots = [...pots, newPot];
+      setPots(updatedPots);
+    };
+
   // Handle updating an existing budget
 
   const updateBudget = (updatedBudget) => {
     setBudgets((prevBudgets) =>
       prevBudgets.map((budget) =>
         budget.id === updatedBudget.id ? updatedBudget : budget
+      )
+    );
+  };
+
+  const updatePot = (updatedPot) => {
+    setPots((prevPots) =>
+      prevPots.map((pot) =>
+        pot.id === updatedPot.id ? updatedPot : pot
       )
     );
   };
@@ -53,11 +72,19 @@ export const TransactionsProvider = ({ children }) => {
     setBudgets((prevBudgets) => prevBudgets.filter(budget => budget.id !== id));
   };
   
+  const deletePot = (id) => {
+    setBudgets((prevPots) => prevPots.filter(pot => pot.id !== id));
+  };
 
   // Save budgets to localStorage when they change
   useEffect(() => {
     localStorage.setItem('budgets', JSON.stringify(budgets));
   }, [budgets]);
+
+    // Save budgets to localStorage when they change
+    useEffect(() => {
+      localStorage.setItem('pots', JSON.stringify(pots));
+    }, [pots]);
 
   // Handle filtering by search
   const filteredBySearch = transactions.filter(transaction =>
@@ -104,7 +131,7 @@ export const TransactionsProvider = ({ children }) => {
       currentPage, setCurrentPage,
       totalPages, currentTransactions, budgets, setBudgets, 
       transactions, pots, setPots, balance, setBalance, 
-      addBudget, updateBudget, deleteBudget // Expose functions
+      addBudget, updateBudget, deleteBudget, addPot, updatePot, deletePot // Expose functions
     }}>
       {children}
     </TransactionsContext.Provider>

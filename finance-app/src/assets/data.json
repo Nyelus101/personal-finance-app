@@ -426,30 +426,35 @@
     ],
     "pots": [
         {
+            "id": "1",
             "name": "Savings",
             "target": 2000.00,
             "total": 159.00,
             "theme": "#277C78"
         },
         {
+            "id": "2",
             "name": "Concert Ticket",
             "target": 150.00,
             "total": 110.00,
             "theme": "#626070"
         },
         {
+            "id": "3",
             "name": "Gift",
             "target": 150.00,
             "total": 110.00,
             "theme": "#82C9D7"
         },
         {
+            "id": "4",
             "name": "New Laptop",
             "target": 1000.00,
             "total": 10.00,
             "theme": "#F2CDAC"
         },
         {
+            "id": "5",
             "name": "Holiday",
             "target": 1440.00,
             "total": 531.00,
