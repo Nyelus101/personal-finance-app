@@ -61,6 +61,10 @@ const Modal = ({ isOpen, toggleModal }) => {
     console.log("New pot created:", newPot);
     addPot(newPot);
     toggleModal();  // Close modal after submission
+
+    setName('');
+    setTarget('');
+    setSelectedColor(null);
   };
 
   // Toggle dropdown visibility
@@ -116,7 +120,7 @@ console.log("Color Options:", colorOptions.map(option => option.color));
             <p className="text-sm text-right text-gray-500">{charactersLeft} characters left</p>
           </div>
 
-          {/* Maximum Amount */}
+          {/* Target Amount */}
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="maximum">
               Target

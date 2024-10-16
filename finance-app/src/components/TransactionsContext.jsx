@@ -73,7 +73,7 @@ export const TransactionsProvider = ({ children }) => {
   };
   
   const deletePot = (id) => {
-    setBudgets((prevPots) => prevPots.filter(pot => pot.id !== id));
+    setPots((prevPots) => prevPots.filter(pot => pot.id !== id));
   };
 
   // Save budgets to localStorage when they change

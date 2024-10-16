@@ -48,6 +48,10 @@ const Modal = ({ isOpen, toggleModal }) => {
     };
     addBudget(newBudget);
     toggleModal();  // Close modal after submission
+
+    setName('');
+    setTarget('');
+    setSelectedColor(null);
   };
 
   // Toggle dropdown visibility
