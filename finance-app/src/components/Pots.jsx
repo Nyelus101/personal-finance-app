@@ -4,9 +4,9 @@ import { PiDotsThree } from "react-icons/pi";
 import { useNavigate } from 'react-router-dom';
 import Modal from './NewPot/NewModal';
 import AddModal from './NewPot/AddModal'; // Separate Add Money Modal
+import WithdrawModal from './NewPot/WithdrawModal';
 import EditModal from './NewPot/EditModal';
 import DeleteModal from './NewPot/DeleteModal';
-// import Add from './NewPot/Add';
 
 const Pots = () => {
   const { deletePot, addPot, pots } = useContext(TransactionsContext);
@@ -18,7 +18,9 @@ const Pots = () => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false); // State for Delete Modal
   const [potToDelete, setPotToDelete] = useState(null); // Pot selected for deletion
   const [isAddMoneyModalOpen, setIsAddMoneyModalOpen] = useState(false); // State for Add Modal
+  const [isWithdrawMoneyModalOpen, setIsWithdrawMoneyModalOpen] = useState(false); // State for Withdraw Modal
   const [selectedPotForAdd, setSelectedPotForAdd] = useState(null); // Pot selected for adding money
+  const [selectedPotForWithdraw, setSelectedPotForWithdraw] = useState(null); // Pot selected for Withdrawing money
 
 
   // Function to open/close Add Money modal
@@ -26,6 +28,12 @@ const Pots = () => {
     setSelectedPotForAdd(pot); // Set the pot to add money
     setIsAddMoneyModalOpen(!isAddMoneyModalOpen); // Toggle the Add Money modal
   };
+
+    // Function to open/close Add Money modal
+    const toggleWithdrawMoneyModal = (pot) => {
+      setSelectedPotForWithdraw(pot); // Set the pot to Withdraw money
+      setIsWithdrawMoneyModalOpen(!isWithdrawMoneyModalOpen); // Toggle theWithdraw Money modal
+    };
 
   // Function to open/close modal
   const toggleModal = () => {
@@ -97,6 +105,11 @@ const Pots = () => {
         <AddModal isOpen={isAddMoneyModalOpen} toggleModal={() => toggleAddMoneyModal(null)} pot={selectedPotForAdd} />
       )}
 
+      {/* Render Add Money Modal */}
+      {selectedPotForWithdraw && (
+        <WithdrawModal isOpen={isWithdrawMoneyModalOpen} toggleModal={() => toggleWithdrawMoneyModal(null)} pot={selectedPotForWithdraw} />
+      )}
+
       <div className='flex w-full flex-col lg:flex-row gap-5'>
         {/* Pots Section */}
         <div className='w-full h-full lg:h-[85vh] overflow-y-auto  '>
@@ -156,7 +169,9 @@ const Pots = () => {
                       <button className='w-[50%] h-12 bg-custom-bg rounded-lg'
                        onClick={() => toggleAddMoneyModal(pot)} // Open Add Money modal
                        >+ Add Money</button>
-                      <button className='w-[50%] h-12 bg-custom-bg rounded-lg'>Withdraw</button>
+                      <button className='w-[50%] h-12 bg-custom-bg rounded-lg'
+                      onClick={() => toggleWithdrawMoneyModal(pot)} // Open Withdraw Money modal
+                      >Withdraw</button>
                     </div>
 
                   </div>
