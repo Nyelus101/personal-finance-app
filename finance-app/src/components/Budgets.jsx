@@ -215,29 +215,36 @@ const Budgets = () => {
                       </div>
                       <ul className="space-y-2">
                         {getLastThreeTransactions(budget.category).map(transaction => (
-                          <li key={transaction.id} className="flex justify-between p-2 rounded border-b-2 last:border-b-0">
-                            <div className='flex items-center space-x-5'>
+                          <li key={transaction.id} className="flex justify-between items-center p-2 rounded border-b-2 last:border-b-0">
+                            <div className='flex items-center space-x-5 w-full'>
                               <span><img src={transaction.avatar} alt="avatar" className="w-6 h-6 rounded-full" /></span>
-                              <span className='font-bold'>{transaction.name}</span>
-                            </div>
-                            <div className='flex flex-col justify-end items-end'>
-                              <span className='font-bold'>
-                                {transaction.amount < 0 
-                                  ? `-$${Math.abs(transaction.amount).toFixed(2)}` 
-                                  : `$${transaction.amount.toFixed(2)}`
-                                }
-                              </span>
-                              <span>
-                                {new Date(transaction.date).toLocaleDateString('en-GB', {
-                                  day: '2-digit', 
-                                  month: 'short', 
-                                  year: 'numeric'
-                                })}
-                              </span>
+                              
+                              {/* Wrap the name and amount in a flex container to manage wrapping */}
+                              <div className="flex items-center justify-between w-full">
+                                <span className='font-bold'>{transaction.name}</span>
+                                
+                                {/* Amount and Date section */}
+                                <div className='text-right flex-shrink-0'>
+                                  <span className='font-bold block'>
+                                    {transaction.amount < 0 
+                                      ? `-$${Math.abs(transaction.amount).toFixed(2)}` 
+                                      : `$${transaction.amount.toFixed(2)}`
+                                    }
+                                  </span>
+                                  <span className='text-sm block'>
+                                    {new Date(transaction.date).toLocaleDateString('en-GB', {
+                                      day: '2-digit', 
+                                      month: 'short', 
+                                      year: 'numeric'
+                                    })}
+                                  </span>
+                                </div>
+                              </div>
                             </div>
                           </li>
                         ))}
                       </ul>
+
                     </div>
                   </div>
                 </li>
