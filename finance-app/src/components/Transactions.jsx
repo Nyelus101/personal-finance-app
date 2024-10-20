@@ -47,7 +47,7 @@ const Transactions = () => {
   return (
     <div className='h-full'>
       <div className='flex items-center justify-between mb-2'>
-        <h2 className='text-3xl lg:text-xl font-bold '>Transactions</h2>
+        <h2 className='text-2xl lg:text-xl font-bold '>Transactions</h2>
         <button 
           className='text-white text-sm bg-black p-3 rounded-2xl' 
           onClick={toggleNewTransactionModal} // Open modal when button is clicked
