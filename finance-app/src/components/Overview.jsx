@@ -17,7 +17,7 @@ const Overview = () => {
     .slice(0, 5); // Get the last 5 transactions
 
   return (
-    <div className='h-full'>
+    <div className='h-full mb-20'>
       <span className='text-3xl lg:text-xl font-bold mb-4'>Overview</span>
       <div className=' pt-4 space-y-4 h-full '>
         <div className='div-1 three-divs flex flex-col md:flex-row items-center justify-between w-full space-y-3 md:space-y-0'>
@@ -115,7 +115,7 @@ const Overview = () => {
                 </div>
                 <div className='summary w-[30%]'>
                 <div className='spendingSummary pt-4'>
-                  {budgets.map((budget, index) => {
+                  {budgets.slice(0, 4).map((budget, index) => {
                     return (
                       <div key={index} className='category-item flex flex-col py-1 items-start '>
                         <div className='flex flex-col items-start pl-2' style={{ borderLeft: `4px solid ${budget.theme}` }}>

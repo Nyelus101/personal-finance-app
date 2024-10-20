@@ -13,3 +13,7 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
+
+body {
+  background-color: #F8F4F0;
+}

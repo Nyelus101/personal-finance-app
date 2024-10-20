@@ -110,7 +110,7 @@ const Budgets = () => {
         <div className='w-full lg:w-[40%] bg-white rounded-lg p-4'>
           <DonutChart budgets={budgets} transactions={transactions} /> 
           
-          <div className='spendingSummary pt-4'>
+          <div className='spendingSummary pt-4 lg:h-[40vh] lg:overflow-y-auto lg:scroll-hidden'>
             <span className='font-bold text-lg'>Spending Summary</span>
             {budgets.map((budget, index) => {
               const budgetId = budget.id || `generated-id-${index}`; // Use `id` if available, otherwise assign a unique one
